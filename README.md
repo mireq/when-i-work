@@ -1,7 +1,7 @@
 # Computer usage monitoring utility
 
 This utility monitors keyboard activity and records statistics to file
-`~/.work_log`.o
+`~/.work_log`.
 
 # Usage
 
