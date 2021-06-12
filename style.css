@@ -1,0 +1,151 @@
+ :root {
+  --bg: 16, 16, 16;
+  --fg: 255, 255, 255;
+}
+
+html, body {
+	font-family: sans-serif;
+	color: rgb(var(--fg));
+	background: rgb(var(--bg));
+}
+
+.row {
+	padding-left: 10em;
+	margin-bottom: 1em;
+}
+
+.row .title {
+	width: 9em;
+	margin-left: -10em;
+	float: left;
+}
+
+.time-scale {
+	position: relative;
+	height: 2.5em;
+}
+
+.time-scale .tick {
+	position: absolute;
+	width: 1px;
+	height: 2.5em;
+}
+
+.time-scale .tick:after {
+	content: '';
+	display: block;
+	position: absolute;
+	bottom: 0;
+	width: 1px;
+	height: .2em;
+	background: rgb(var(--fg));
+}
+
+.time-scale .tick.tick-3:after {
+	height: .4em;
+}
+
+.time-scale .tick.tick-4:after {
+	height: 1em;
+}
+
+.time-scale .tick.tick-4 span {
+	display: block;
+	position: absolute;
+	width: 1px;
+	width: 5em;
+	margin-left: -2.5em;
+	text-align: center;
+}
+
+.work-scale {
+	margin-top: 3em;
+	margin-bottom: 4em;
+	height: 1em;
+	background: #eee;
+	position: relative;
+}
+
+.work-scale .label {
+	position: absolute;
+	bottom: -1.5em;
+}
+
+.work-scale .label.start {
+	left: 0;
+}
+
+.work-scale .label.end {
+	right: 0;
+}
+
+.work-bar {
+	height: 1.5em;
+	background: #eee;
+}
+
+.row.by-day {
+	position: relative;
+}
+
+.daily .daily-bar {
+	height: 4px;
+	position: relative;
+}
+
+.daily .daily-bar:hover {
+	z-index: 1;
+	box-shadow: 0px -1px 0px rgb(var(--fg));
+}
+
+.date-scale {
+	margin-right: -.75em;
+}
+
+.date-scale .tick {
+	width: 1em;
+	height: 1px;
+}
+
+.date-scale .tick:after {
+	content: '';
+	display: block;
+	right: 0;
+	height: 1px;
+	width: .1em;
+	background: rgb(var(--fg));
+	opacity: .25;
+	margin-left: auto;
+	margin-bottom: 3px;
+}
+
+.date-scale .tick.tick-2:after {
+	width: .15em;
+	opacity: 1;
+}
+
+.date-scale .tick.tick-3:after {
+	width: .8em;
+	opacity: 1;
+}
+
+.tooltip {
+	position: fixed;
+	top: 0;
+	left: 0;
+	pointer-events: none;
+}
+
+.tooltip.hidden {
+	display: none;
+}
+
+.tooltip .tooltip-content {
+	position: relative;
+	left: -50%;
+	padding: .25em .5em;
+	border: 1px solid rgba(var(--fg), .25);
+	background: rgba(var(--bg), .75);
+	font-size: 80%;
+	pointer-events: none;
+}
