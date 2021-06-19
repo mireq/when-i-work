@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from pynput import keyboard
-import time
+from datetime import datetime
+from pathlib import Path
 import fcntl
 import os
-import sys
-from pathlib import Path
-from datetime import datetime
 import signal
+import sys
+import time
 
+from pynput import keyboard
 
 
 activity = []
