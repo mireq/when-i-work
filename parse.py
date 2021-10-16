@@ -20,18 +20,18 @@ DEST_TZ = pytz.timezone('Europe/Bratislava')
 TimeRecording = namedtuple('TimeRecording', ['minutes', 'active_days', 'max_value'])
 
 
-def collect_times(times, divide_by_days=False):
-	days = 7 if divide_by_days else 1
-	days_recorded = [set() for __ in range(days)]
-	recording = [np.zeros((60*24,), dtype=int) for __ in range(days)]
+def collect_times(times, day_groups):
+	days_recorded = [set() for __ in range(len(day_groups))]
+	recording = [np.zeros((60*24,), dtype=int) for __ in range(len(day_groups))]
 	for start, seconds in times:
 		date = start.date()
-		day = date.weekday() if divide_by_days else 0
-		days_recorded[day].add(start.date())
-		end = start + timedelta(seconds=seconds)
-		start_minute = start.hour * 60 + start.minute
-		end_minute = end.hour * 60 + end.minute
-		recording[day][start_minute:end_minute] += 1
+		for group, group_days in enumerate(day_groups):
+			if date.weekday() in group_days:
+				days_recorded[group].add(start.date())
+				end = start + timedelta(seconds=seconds)
+				start_minute = start.hour * 60 + start.minute
+				end_minute = end.hour * 60 + end.minute
+				recording[group][start_minute:end_minute] += 1
 	return [
 		TimeRecording(recording, len(days_recorded), int(np.max(recording)))
 		for recording, days_recorded in zip(recording, days_recorded)
@@ -100,8 +100,8 @@ def main():
 			continue
 
 	time_records = sorted(time_records)
-	total_report = collect_times(time_records, divide_by_days=False)
-	daily_report = collect_times(time_records, divide_by_days=True)
+	reports = collect_times(time_records, [list(range(7)), list(range(5)), [5, 6]] + [[i] for i in range(7)])
+	labels = ["Total", "Work days", "Weekend"] + list(calendar.day_name)
 
 	daily_data = format_daily_data(time_records)
 
@@ -110,18 +110,9 @@ def main():
 		template = tpl_fp.read()
 
 	time_reports = []
-	for record in total_report:
+	for label, record in zip(labels, reports):
 		time_reports.append({
-			'label': 'Celkovo',
-			'minutes': [int(minute) for minute in record.minutes],
-			'active_days': record.active_days,
-			'max_value': record.max_value,
-		})
-
-	weekdays = list(calendar.day_name)
-	for weekday, record in enumerate(daily_report):
-		time_reports.append({
-			'label': weekdays[weekday],
+			'label': label,
 			'minutes': [int(minute) for minute in record.minutes],
 			'active_days': record.active_days,
 			'max_value': record.max_value,
