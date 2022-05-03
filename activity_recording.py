@@ -40,7 +40,7 @@ class ActivityLogger(object):
 
 	def on_activity(self, key):
 		time = datetime.utcnow().replace(microsecond=0)
-		seconds = (time - self.last_recording).total_seconds()
+		seconds = int((time - self.last_recording).total_seconds())
 		self.last_recording = time
 		self.record_seconds(seconds)
 
