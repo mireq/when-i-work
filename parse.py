@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import argparse
 import sys
 import traceback
 from datetime import datetime, timedelta, timezone
@@ -73,8 +74,12 @@ def format_daily_data(time_records):
 
 
 def main():
+	parser = argparse.ArgumentParser(description="Shadertoy tool")
+	parser.add_argument('--logfile', type=argparse.FileType('r'), default=str(Path.home() / '.work_log'), help="Log file")
+	args = parser.parse_args()
+
 	locale.setlocale(locale.LC_ALL, '')
-	logfile = open(Path.home() / '.work_log', 'r')
+	logfile = args.logfile
 	time_records = []
 	for num, row in enumerate(logfile.readlines()):
 		try:
